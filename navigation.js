@@ -6,6 +6,9 @@ import OnboardingScreenTwo from "./screens/OnboardingTwo";
 import OnboardingScreenThree from "./screens/OnboarddingThree";
 import GetStartedScreen from "./screens/GetStartedScreen";
 import LoginScreen from "./screens/LoginScreen";
+import HomeScreen from "./screens/HomeScreen";
+import FoodDonation from "./screens/FoodDonation";
+import PickupSelectScreen from "./screens/PickupSelectScreen";
 
 export default function Navigation() {
   const Stack = createNativeStackNavigator();
@@ -21,6 +24,9 @@ export default function Navigation() {
         <Stack.Screen name="OnboardThree" component={OnboardingScreenThree} />
         <Stack.Screen name="GetStarted" component={GetStartedScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Donation" component={FoodDonation} />
+        <Stack.Screen name="Pickup" component={PickupSelectScreen} />
         {/* <Stack.Screen name="Restaurant" component={RestaurantScreen} />
         <Stack.Screen
           name="Cart"
