@@ -13,22 +13,23 @@ import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
 import { theme } from "../constants/theme";
 import { useNavigation } from "@react-navigation/native";
 
-const OnboardingScreen = () => {
+const ThankYou = () => {
   const navigation = useNavigation();
   return (
     <View className="flex-1">
       <StatusBar barStyle={"light-content"} />
       <Image
-        source={require("../assets/images/Ghana-orphanage.png")}
+        source={require("../assets/images/vegetable.png")}
         style={styles.bgImage}
         resizeMode="cover"
+        blurRadius={7}
       />
       <Animated.View entering={FadeInDown.duration(600)} style={{ flex: 1 }}>
         <LinearGradient
           colors={[
-            "rgba(13, 73, 52, 1)",
-            "rgba(13, 73, 52, 0.8)",
-            "rgba(0, 0, 0, 0.45)",
+            "rgba(0, 0, 0, 0.3)",
+            "rgba(0, 0, 0, 0.6)",
+            "rgba(0, 0, 0, 0.6)",
           ]}
           style={styles.gradient}
           start={{ x: 0.5, y: 0 }}
@@ -36,54 +37,49 @@ const OnboardingScreen = () => {
         />
         {/* Content */}
         <View style={styles.contentContainerOne}>
-          <View className="flex-row justify-around items-center ">
-            <View className="flex-row gap-4 justify-between items-center">
-              <Animated.View
-                entering={FadeInRight.delay(200)
-                  .duration(1000)
-                  .springify()
-                  .damping(14)}
-                style={styles.line}
-                className=" bg-white rounded-lg"
-              ></Animated.View>
-              <Animated.View
-                entering={FadeInRight.delay(300)
-                  .duration(1000)
-                  .springify()
-                  .damping(14)}
-                style={styles.line}
-                className=" bg-white/25 rounded-lg"
-              ></Animated.View>
-              <Animated.View
-                entering={FadeInRight.delay(500)
-                  .duration(1000)
-                  .springify()
-                  .damping(14)}
-                style={styles.line}
-                className=" bg-white/25 rounded-lg"
-              ></Animated.View>
-            </View>
-            <Pressable onPress={() => navigation.navigate("DonationSummary")}>
-              <Text className="text-white ml-4 text-lg">Skip</Text>
-            </Pressable>
+          <View>
+            <Animated.Text
+              entering={FadeInDown.delay(100).springify()}
+              style={styles.title}
+              className="font-extrabold"
+            >
+              Sunday,
+            </Animated.Text>
+            <Animated.Text
+              entering={FadeInDown.delay(400).springify()}
+              style={styles.title}
+              className="font-extrabold"
+            >
+              thank you for your donation!
+              <Animated.Image
+                entering={FadeInRight.delay(600).springify().damping(5)}
+                source={require("../assets/icons/clap.png")}
+              />
+            </Animated.Text>
           </View>
-          <Animated.Text
-            entering={FadeInDown.delay(400).springify()}
-            style={styles.title}
-            className="font-extrabold"
-          >
-            NUTRILINK, BRIDGING THE GAP BETWEEN FOOD WASTE AND HUNGER
-          </Animated.Text>
+          <Text className="text-white leading-5 text-base">
+            Your actions matter. And when you decided to make a food donation to
+            those who needed it thereby reducing food waste, you did the right
+            thing. Thank you for your commitment.
+          </Text>
+          <View className="gap-2">
+            <Text className="text-white leading-5 text-base">Yours,</Text>
+            <Image
+              source={require("../assets/logo/nutri-logo.png")}
+              className="w-12 h-12 "
+            />
+            <Text className="text-white font-bold text-xl">NutriLink.</Text>
+          </View>
         </View>
         <View style={styles.contentContainer}>
           <Animated.View entering={FadeInDown.delay(600).springify()}>
             <Pressable
               style={styles.startButton}
               className="rounded-full"
-              onPress={() => navigation.navigate("OnboardTwo")}
+              onPress={() => navigation.navigate("Awaiting")}
             >
               <Text style={styles.startText} className="text-center">
-                Next
+                Tap to Continue
               </Text>
             </Pressable>
           </Animated.View>
@@ -109,12 +105,11 @@ const styles = StyleSheet.create({
     height: hp(0.5),
   },
   contentContainerOne: {
-    paddingTop: 90,
+    paddingTop: hp(20),
     paddingHorizontal: 20,
     flex: 1,
-    alignItems: "center",
     justifyContent: "flex-start",
-    gap: 35,
+    gap: 25,
   },
   contentContainer: {
     paddingHorizontal: 20,
@@ -124,7 +119,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   title: {
-    fontSize: hp(3),
+    fontSize: hp(5),
     color: "white",
     fontWeight: theme.fontWeights.bold,
   },
@@ -136,15 +131,15 @@ const styles = StyleSheet.create({
   },
   startButton: {
     marginBottom: 50,
-    backgroundColor: theme.colors.white,
     padding: 15,
     width: wp(80),
   },
   startText: {
-    color: "black",
-    fontSize: wp(5),
+    color: theme.colors.white,
+
+    fontSize: wp(6),
     fontWeight: theme.fontWeights.medium,
     letterSpacing: 1,
   },
 });
-export default OnboardingScreen;
+export default ThankYou;

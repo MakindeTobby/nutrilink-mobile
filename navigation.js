@@ -9,6 +9,9 @@ import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
 import FoodDonation from "./screens/FoodDonation";
 import PickupSelectScreen from "./screens/PickupSelectScreen";
+import DonationSummary from "./screens/DonationSummaryScreen";
+import ThankYou from "./screens/ThankYouScreen";
+import AwaitingScreen from "./screens/AwaitingScreen";
 
 export default function Navigation() {
   const Stack = createNativeStackNavigator();
@@ -27,16 +30,14 @@ export default function Navigation() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Donation" component={FoodDonation} />
         <Stack.Screen name="Pickup" component={PickupSelectScreen} />
+        <Stack.Screen name="DonationSummary" component={DonationSummary} />
+        <Stack.Screen name="Thanks" component={ThankYou} />
+        <Stack.Screen name="Awaiting" component={AwaitingScreen} />
         {/* <Stack.Screen name="Restaurant" component={RestaurantScreen} />
         <Stack.Screen
           name="Cart"
           options={{ presentation: "modal" }}
           component={CartScreen}
-        />
-        <Stack.Screen
-          name="OrderPreparing"
-          options={{ presentation: "fullScreenModal" }}
-          component={OrderPreparingScreen}
         />
         <Stack.Screen
           name="Delivery"
