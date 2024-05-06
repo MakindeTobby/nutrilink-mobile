@@ -42,7 +42,7 @@ const AwaitingScreen = () => {
           </View>
           <View
             style={{ borderRadius: theme.radius.xl, marginVertical: hp(6) }}
-            className="bg-white flex-1 "
+            className="bg-white flex-1 py-2"
           >
             <View style={styles.content}>
               <View className="p-4 space-y-2">
@@ -92,7 +92,7 @@ const AwaitingScreen = () => {
           </View>
 
           <Button
-            onPress={() => navigation.navigate("Thanks")}
+            onPress={() => navigation.navigate("Tracking")}
             title="Next"
             filled
             style={{

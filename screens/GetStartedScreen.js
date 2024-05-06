@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { hp, wp } from "../helpers/common";
 import { LinearGradient } from "expo-linear-gradient";
-import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { theme } from "../constants/theme";
 import { useNavigation } from "@react-navigation/native";
 
@@ -27,7 +27,7 @@ const GetStartedScreen = () => {
       <Animated.View entering={FadeInDown.duration(600)} style={{ flex: 1 }}>
         <LinearGradient
           colors={[
-            "rgba(255, 255, 255, 0.7)",
+            "rgba(255, 255, 255, 0.4)",
             "rgba(0, 0, 0, 0.6)",
             "rgba(0, 0, 0, 0.6)",
           ]}
@@ -41,7 +41,7 @@ const GetStartedScreen = () => {
         <View style={styles.contentContainer}>
           <Image
             source={require("../assets/logo/nutri-logo.png")}
-            className="w-16 h-16 "
+            className="w-14 h-14 "
           />
           <Animated.Text
             entering={FadeInDown.delay(400).springify()}

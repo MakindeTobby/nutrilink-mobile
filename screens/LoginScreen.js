@@ -24,7 +24,7 @@ const LoginScreen = () => {
         <View style={{ marginVertical: 22 }}>
           <Text
             style={{
-              fontWeight: "400",
+              fontWeight: 400,
               fontSize: wp(7),
             }}
           >
@@ -38,7 +38,7 @@ const LoginScreen = () => {
             <TextInput
               placeholder="First & Last name"
               placeholderTextColor={"black"}
-              keyboardType="email-address"
+              keyboardType="default"
               style={{
                 width: "100%",
               }}
@@ -90,7 +90,7 @@ const LoginScreen = () => {
             >
               <Image
                 source={require("../assets/logo/google.png")}
-                className="w-5 h-5   rounded-full absolute top-5 left-5"
+                className="w-5 h-5 rounded-full absolute top-5 left-5"
               />
 
               <Text style={styles.startText} className="text-center">
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   btnContainer: {
-    // flex: 1,
+    flex: 1,
     paddingVertical: 12,
     alignItems: "center",
     justifyContent: "flex-end",

@@ -1,29 +1,37 @@
 import {
-  View,
-  Text,
-  StyleSheet,
+  Dimensions,
+  FlatList,
   Image,
-  StatusBar,
   Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import React from "react";
+import { slides } from "../constants/slides";
 import { hp, wp } from "../helpers/common";
-import { LinearGradient } from "expo-linear-gradient";
-import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
 import { theme } from "../constants/theme";
+import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+const { width, height } = Dimensions.get("window");
 
-const OnboardingScreen = () => {
-  const navigation = useNavigation();
+const Slide = ({
+  item,
+  currentSlideIndex,
+  skip,
+  goToNextSlide,
+  navigation,
+  index,
+}) => {
   return (
-    <View className="flex-1">
-      <StatusBar barStyle={"light-content"} />
-      <Image
-        source={require("../assets/images/Ghana-orphanage.png")}
-        style={styles.bgImage}
-        resizeMode="cover"
-      />
-      <Animated.View entering={FadeInDown.duration(600)} style={{ flex: 1 }}>
+    <View style={{ width, height }}>
+      <Animated.View
+        entering={FadeInDown.duration(index * 600)}
+        style={{ flex: 1 }}
+      >
+        <Image source={item?.image} style={styles.bgImage} resizeMode="cover" />
         <LinearGradient
           colors={[
             "rgba(13, 73, 52, 1)",
@@ -34,64 +42,148 @@ const OnboardingScreen = () => {
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 0.8 }}
         />
-        {/* Content */}
+
         <View style={styles.contentContainerOne}>
-          <View className="flex-row justify-around items-center ">
-            <View className="flex-row gap-4 justify-between items-center">
+          <View className="flex-row justify-between gap-4 items-center ">
+            {/* <View className="flex-row gap-4 justify-between items-center"> */}
+            {slides.map((_, index) => (
               <Animated.View
+                key={index}
                 entering={FadeInRight.delay(200)
-                  .duration(1000)
+                  .duration(index * 1000)
                   .springify()
                   .damping(14)}
-                style={styles.line}
-                className=" bg-white rounded-lg"
-              ></Animated.View>
-              <Animated.View
-                entering={FadeInRight.delay(300)
-                  .duration(1000)
-                  .springify()
-                  .damping(14)}
-                style={styles.line}
-                className=" bg-white/25 rounded-lg"
-              ></Animated.View>
-              <Animated.View
-                entering={FadeInRight.delay(500)
-                  .duration(1000)
-                  .springify()
-                  .damping(14)}
-                style={styles.line}
-                className=" bg-white/25 rounded-lg"
-              ></Animated.View>
-            </View>
-            <Pressable onPress={() => navigation.navigate("DonationSummary")}>
-              <Text className="text-white ml-4 text-lg">Skip</Text>
-            </Pressable>
+                style={[
+                  styles.line,
+                  currentSlideIndex == index && {
+                    backgroundColor: "white",
+                  },
+                ]}
+                className=" bg-white/40 rounded-lg"
+              />
+            ))}
+            {/* </View> */}
+            {currentSlideIndex == slides.length - 1 ? (
+              <Pressable onPress={skip}>
+                <Text className="text-white  text-lg"></Text>
+              </Pressable>
+            ) : (
+              <Pressable onPress={skip}>
+                <Text className="text-white  text-lg">Skip</Text>
+              </Pressable>
+            )}
           </View>
           <Animated.Text
-            entering={FadeInDown.delay(400).springify()}
+            entering={FadeInDown.delay(index * 400).springify()}
             style={styles.title}
             className="font-extrabold"
           >
-            NUTRILINK, BRIDGING THE GAP BETWEEN FOOD WASTE AND HUNGER
+            {item?.title}
           </Animated.Text>
         </View>
         <View style={styles.contentContainer}>
-          <Animated.View entering={FadeInDown.delay(600).springify()}>
-            <Pressable
-              style={styles.startButton}
-              className="rounded-full"
-              onPress={() => navigation.navigate("OnboardTwo")}
-            >
-              <Text style={styles.startText} className="text-center">
-                Next
-              </Text>
-            </Pressable>
-          </Animated.View>
+          {currentSlideIndex == slides.length - 1 ? (
+            <Animated.View entering={FadeInDown.delay(index * 600).springify()}>
+              <Pressable
+                style={styles.startButton}
+                className="rounded-full"
+                onPress={() => navigation.navigate("GetStarted")}
+              >
+                <Text style={styles.startText} className="text-center">
+                  Get Started
+                </Text>
+              </Pressable>
+            </Animated.View>
+          ) : (
+            <Animated.View entering={FadeInDown.delay(index * 600).springify()}>
+              <Pressable
+                style={styles.startButton}
+                className="rounded-full"
+                onPress={goToNextSlide}
+              >
+                <Text style={styles.startText} className="text-center">
+                  Next
+                </Text>
+              </Pressable>
+            </Animated.View>
+          )}
         </View>
       </Animated.View>
     </View>
   );
 };
+
+const Onboarding = () => {
+  const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
+  const navigation = useNavigation();
+
+  const ref = React.useRef();
+
+  const updateCurrentSlideIndex = (e) => {
+    const contentOffsetX = e.nativeEvent.contentOffset.x;
+    const currentIndex = Math.round(contentOffsetX / width);
+    setCurrentSlideIndex(currentIndex);
+  };
+
+  const goToNextSlide = () => {
+    const nextSlideIndex = currentSlideIndex + 1;
+    if (nextSlideIndex != slides.length) {
+      const offset = nextSlideIndex * width;
+      ref?.current.scrollToOffset({ offset });
+      setCurrentSlideIndex(currentSlideIndex + 1);
+    }
+  };
+
+  const skip = () => {
+    const lastSlideIndex = slides.length - 1;
+    const offset = lastSlideIndex * width;
+    ref?.current.scrollToOffset({ offset });
+    setCurrentSlideIndex(lastSlideIndex);
+  };
+  const handleScroll = (event) => {
+    const x = event.nativeEvent.contentOffset.x;
+    // If trying to scroll past the first slide
+    if (x < 0) {
+      // Force snap back to the start
+      ref.current.scrollToOffset({ offset: 0, animated: true });
+    }
+  };
+  return (
+    <>
+      <StatusBar barStyle={"light-content"} />
+      <View
+        style={{ flex: 1, backgroundColor: theme.colors.darkPrimary }}
+        className="bg-green-200"
+      >
+        <FlatList
+          ref={ref}
+          style={{ flex: 1 }}
+          onMomentumScrollEnd={updateCurrentSlideIndex}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          pagingEnabled={true}
+          data={slides}
+          renderItem={({ item, index }) => (
+            <Slide
+              index={index}
+              item={item}
+              skip={skip}
+              currentSlideIndex={currentSlideIndex}
+              goToNextSlide={goToNextSlide}
+              navigation={navigation}
+            />
+          )}
+          // onScroll={handleScroll}
+          scrollEnabled={currentSlideIndex !== 0}
+        />
+      </View>
+    </>
+  );
+};
+
+export default Onboarding;
+
 const styles = StyleSheet.create({
   bgImage: {
     width: wp(100),
@@ -109,7 +201,7 @@ const styles = StyleSheet.create({
     height: hp(0.5),
   },
   contentContainerOne: {
-    paddingTop: 90,
+    paddingTop: hp(8),
     paddingHorizontal: 20,
     flex: 1,
     alignItems: "center",
@@ -147,4 +239,3 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 });
-export default OnboardingScreen;
